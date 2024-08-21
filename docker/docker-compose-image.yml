@@ -1,0 +1,5 @@
+services:
+  simple-app:
+    image: simple-app:latest
+    ports:
+      - 8080:8080

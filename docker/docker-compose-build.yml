@@ -1,0 +1,8 @@
+services:
+  simple-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: simple-app:latest
+    ports:
+      - 8080:8080
