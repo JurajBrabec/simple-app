@@ -34,10 +34,13 @@ jobs:
         run: |
           docker run -d --name test-container ghcr.io/jurajbrabec/simple-app:latest
 
+      - name: Wait for 10 seconds
+        run: |
+          sleep 10
+
       - name: Check container status
         run: |
-          # wait and check if container is running or exited without error
-          sleep 10
+          # check if test-container is running or exited without error
           if [ "$(docker inspect -f '{{.State.Running}}' test-container)" != "true" ]; then
             exit_code=$(docker inspect test-container --format='{{.State.ExitCode}}')
             if [ $exit_code -ne 0 ]; then
@@ -46,9 +49,9 @@ jobs:
             fi
           fi
           echo "Container is starting correctly."
-          exit 0
 
       - name: Cleanup Docker container
         run: |
+          # docker stop/rm of test-container
           docker stop test-container
           docker rm test-container
