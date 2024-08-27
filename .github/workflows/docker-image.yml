@@ -29,3 +29,22 @@ jobs:
           provenance: false
           tags: |
             ghcr.io/jurajbrabec/simple-app:latest
+
+      - name: Run the Docker container for testing
+        run: |
+          docker run -d --name test-container ghcr.io/jurajbrabec/simple-app:latest
+
+      - name: Check container status
+        run: |
+          sleep 10
+          docker inspect -f '{{.State.Running}}' test-container
+          if [ "$(docker inspect -f '{{.State.Running}}' test-container)" != "true" ]; then
+            echo "Container failed to start."
+            exit 1
+          fi
+          echo "Container is starting correctly."
+
+      - name: Cleanup Docker container
+        run: |
+          docker stop test-container
+          docker rm test-container
