@@ -36,14 +36,17 @@ jobs:
 
       - name: Check container status
         run: |
-          # sleep and test container
+          # wait and check if container is running or exited without error
           sleep 10
-          docker inspect -f '{{.State}}' test-container
           if [ "$(docker inspect -f '{{.State.Running}}' test-container)" != "true" ]; then
-            echo "Container failed to start."
-            exit 1
+            exit_code=$(docker inspect test-container --format='{{.State.ExitCode}}')
+            if [ $exit_code -ne 0 ]; then
+              echo "Container failed to start (E:${exit_code})."
+              exit 1
+            fi
           fi
           echo "Container is starting correctly."
+          exit 0
 
       - name: Cleanup Docker container
         run: |
