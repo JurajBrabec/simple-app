@@ -36,8 +36,9 @@ jobs:
 
       - name: Check container status
         run: |
+          # sleep and test container
           sleep 10
-          docker inspect -f '{{.State.Running}}' test-container
+          docker inspect -f '{{.State}}' test-container
           if [ "$(docker inspect -f '{{.State.Running}}' test-container)" != "true" ]; then
             echo "Container failed to start."
             exit 1
