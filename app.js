@@ -30,4 +30,4 @@ const shutdown = () => {
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
 
-process.exit(-1972);
+process.exit(1972);
